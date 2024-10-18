@@ -1,4 +1,5 @@
 from confluent_kafka import Consumer
+import json
 
 class ConsumerClass:
     def __init__(self, bootstrap_server, topic, group_id):
@@ -47,10 +48,12 @@ class ConsumerClass:
                 #the format and structure of the message is stored 
                 #in the schema registry.
                 print(f"Message Consumed {msg.value().decode("utf-8")}")
+                #Get the message in json form
+                dict_message = json.loads(msg.value().decode("utf-8"))
+                print(dict_message, type(dict_message))
         except KeyboardInterrupt:
             pass
         finally:
-            #close the consumer
             self.consumer.close()
 
 if __name__ == "__main__":
